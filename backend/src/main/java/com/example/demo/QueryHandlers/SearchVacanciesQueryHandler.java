@@ -36,6 +36,7 @@ public class SearchVacanciesQueryHandler implements Query<Map<String, Object>, L
         String area = (String) input.get("area");
         String experience = (String) input.get("experience");
         Integer salary = (Integer) input.get("salary");
+        String currency = (String) input.get("currency");
 
         if(name != null) {
             predicates.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
@@ -58,6 +59,9 @@ public class SearchVacanciesQueryHandler implements Query<Map<String, Object>, L
             else{
                 throw new IncorrectParameter("You should make more then nothing.");
             }
+        }
+        if(currency != null) {
+            predicates.add(criteriaBuilder.like(root.get("salaryCurrency"), "%" + currency + "%"));
         }
 
         query.where(predicates.toArray(new Predicate[0]));

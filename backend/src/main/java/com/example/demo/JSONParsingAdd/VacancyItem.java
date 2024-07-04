@@ -14,7 +14,7 @@ public class VacancyItem {
     private Salary salary;
     private Experience experience;
 
-    public VacancyItem(long id, String name, String area, int salaryFrom, int salaryTo, String exp){
+    public VacancyItem(long id, String name, String area, int salaryFrom, int salaryTo, String curr, String exp){
         this.id = id;
         this.name = name;
         this.area = new Area();
@@ -22,6 +22,7 @@ public class VacancyItem {
         this.salary = new Salary();
         this.salary.setFrom(salaryFrom);
         this.salary.setTo(salaryTo);
+        this.salary.setCurrency(curr);
         this.experience = new Experience();
         this.experience.setName(exp);
     }
@@ -36,6 +37,10 @@ public class VacancyItem {
 
     public int getSalaryTo() {
         return salary.getTo();
+    }
+
+    public String getCurrency(){
+        return salary.getCurrency();
     }
 
     public String getExperience() {

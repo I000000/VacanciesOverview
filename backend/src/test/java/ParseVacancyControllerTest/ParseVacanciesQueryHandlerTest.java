@@ -44,7 +44,7 @@ public class ParseVacanciesQueryHandlerTest {
 
         VacancyResponse vacancyResponse = new VacancyResponse();
         List<VacancyItem> items = new ArrayList<>();
-        VacancyItem item = new VacancyItem(1, "Тестовая Вакансия", "Москва", 50000, 100000, "Нет опыта");
+        VacancyItem item = new VacancyItem(1, "Тестовая Вакансия", "Москва", 50000, 100000, "RUR", "Нет опыта");
         items.add(item);
         vacancyResponse.setItems(items);
 
@@ -62,6 +62,7 @@ public class ParseVacanciesQueryHandlerTest {
         assertEquals("Москва", response.getBody().get(0).getArea());
         assertEquals(50000, response.getBody().get(0).getSalaryFrom());
         assertEquals(100000, response.getBody().get(0).getSalaryTo());
+        assertEquals("RUR", response.getBody().get(0).getSalaryCurrency());
         assertEquals("Нет опыта", response.getBody().get(0).getExperience());
 
         verify(vacancyRepository, times(1)).save(any(Vacancy.class));

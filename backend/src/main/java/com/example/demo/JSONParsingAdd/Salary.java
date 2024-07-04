@@ -8,4 +8,5 @@ import lombok.Data;
 public class Salary {
     private int from;
     private int to;
+    private String currency;
 }

@@ -23,4 +23,6 @@ public class Vacancy {
     private int salaryFrom;
 
     private int salaryTo;
+
+    private String salaryCurrency;
 }

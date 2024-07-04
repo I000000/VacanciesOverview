@@ -17,10 +17,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -48,22 +45,26 @@ public class SearchVacanciesQueryHandlerTest {
     private Predicate predicate;
 
     @Test
-    public void testFindVacancyByName() {
+    public void searchVacanciesQueryHandler_nameIsGiven_returnsVacancyWithTheProvidedName() {
         // Arrange
         Map<String, Object> input = new HashMap<>();
         input.put("name", "Тестовая Вакансия");
 
-        Vacancy vacancy = new Vacancy(1, "Тестовая Вакансия", "Москва", "Нет опыта", 50000, 100000);
+        Vacancy vacancy = new Vacancy(1, "Тестовая Вакансия", "Москва", "Нет опыта", 50000, 100000, "RUR");
+        Vacancy vacancyWithIncorrectName = new Vacancy(2, "Другая вакансия", "Москва", "Нет опыта", 50000, 100000, "RUR");
         List<Vacancy> vacancies = new ArrayList<>();
         vacancies.add(vacancy);
+        vacancies.add(vacancyWithIncorrectName);
 
         when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
         when(criteriaBuilder.createQuery(Vacancy.class)).thenReturn(query);
         when(query.from(Vacancy.class)).thenReturn(root);
-        when(criteriaBuilder.like(root.get("name"), "%Тестовая Вакансия%")).thenReturn(predicate);
+
+        when(criteriaBuilder.equal(root.get("name"), "Тестовая Вакансия")).thenReturn(predicate);
+
         when(query.where(predicate)).thenReturn(query);
         when(entityManager.createQuery(query)).thenReturn(mock(TypedQuery.class));
-        when(entityManager.createQuery(query).getResultList()).thenReturn(vacancies);
+        when(entityManager.createQuery(query).getResultList()).thenReturn(Collections.singletonList(vacancy));
 
         // Act
         ResponseEntity<List<Vacancy>> response = searchVacanciesQueryHandler.execute(input);
@@ -75,7 +76,47 @@ public class SearchVacanciesQueryHandlerTest {
     }
 
     @Test
-    public void testThrowExceptionForInvalidExperience() {
+    public void searchVacanciesQueryHandler_multipleParametersAreGiven_returnsVacancyWithTheMatchingParameters() {
+        // Arrange
+        Map<String, Object> input = new HashMap<>();
+        input.put("area", "Москва");
+        input.put("experience", "Более 6 лет");
+
+        Vacancy vacancyWithIncorrectExp = new Vacancy(1, "Тестовая Вакансия", "Москва", "Нет опыта", 50000, 100000, "RUR");
+        Vacancy vacancy = new Vacancy(2, "Другая вакансия", "Москва", "Более 6 лет", 50000, 100000, "RUR");
+        List<Vacancy> vacancies = new ArrayList<>();
+        vacancies.add(vacancy);
+        vacancies.add(vacancyWithIncorrectExp);
+
+        when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        when(criteriaBuilder.createQuery(Vacancy.class)).thenReturn(query);
+        when(query.from(Vacancy.class)).thenReturn(root);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(criteriaBuilder.equal(root.get("area"), input.get("area")));
+        predicates.add(criteriaBuilder.equal(root.get("experience"), input.get("experience")));
+
+        Predicate finalPredicate = criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+
+        when(finalPredicate).thenReturn(predicate);
+
+        when(query.where(predicate)).thenReturn(query);
+        when(entityManager.createQuery(query)).thenReturn(mock(TypedQuery.class));
+        when(entityManager.createQuery(query).getResultList()).thenReturn(Collections.singletonList(vacancy));
+
+        // Act
+        ResponseEntity<List<Vacancy>> response = searchVacanciesQueryHandler.execute(input);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1, response.getBody().size());
+        assertEquals("Москва", response.getBody().get(0).getArea());
+        assertEquals("Более 6 лет", response.getBody().get(0).getExperience());
+    }
+
+
+    @Test
+    public void searchVacanciesQueryHandler_invalidExperienceIsGiven_throwsExceptionForInvalidExperience() {
         // Arrange
         Map<String, Object> input = new HashMap<>();
         input.put("experience", "Опыт 5 лет");
@@ -92,7 +133,7 @@ public class SearchVacanciesQueryHandlerTest {
     }
 
     @Test
-    public void testThrowExceptionForNegativeSalary() {
+    public void searchVacanciesQueryHandler_negativeSalaryIsGiven_throwsExceptionForNegativeSalary() {
         // Arrange
         Map<String, Object> input = new HashMap<>();
         input.put("salary", -10000);

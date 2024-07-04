@@ -46,13 +46,15 @@ public class LocalVacancyController {
             @RequestParam(value="name", required=false) String name,
             @RequestParam(value="area", required=false) String area,
             @RequestParam(value="experience", required=false) String experience,
-            @RequestParam(value="salary", required=false) Integer salary){
+            @RequestParam(value="salary", required=false) Integer salary,
+            @RequestParam(value="currency", required=false) String currency){
 
         Map<String, Object> input = new HashMap<>();
         input.put("name", name);
         input.put("area", area);
         input.put("experience", experience);
         input.put("salary", salary);
+        input.put("currency", currency);
 
         return searchVacanciesQueryHandler.execute(input);
     }

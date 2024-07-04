@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +77,13 @@ public class ParseVacanciesQueryHandler implements Query<Map<String, Object>, Li
                 } catch (Exception ignored) {
 
                 }
+                String curr = "RUR";
+                try {
+                    curr = item.getCurrency();
+                } catch (Exception ignored) {
+
+                }
+                vacancy.setSalaryCurrency(curr);
                 vacancy.setExperience(exp);
 
                 vacancyRepository.save(vacancy);

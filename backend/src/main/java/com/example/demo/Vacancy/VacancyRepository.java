@@ -12,7 +12,7 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
 
     List<Vacancy> findByNameContaining(String keyword);
 
-    List<Vacancy> findByAreaContaining(String keyword);
+    List<Vacancy> findByAreaEquals(String keyword);
 
     List<Vacancy> findByExperienceContaining(String keyword);
 }

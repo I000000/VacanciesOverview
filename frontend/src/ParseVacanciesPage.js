@@ -36,14 +36,17 @@ const ParseVacanciesPage = () => {
   return (
     <div>
       <div className='padding__height'>
-        <h2>Парсинг вакансий:</h2>
+        <h2>Парсинг вакансий</h2>
       </div>
       <div className='padding__height'>
-        <label htmlFor="perPage">Количество вакансий: </label>
+        <p style={{ fontStyle: 'italic' }}>(Заполнять все поля необязательно, только количество)</p>
+      </div>
+      <div className='padding__height'>
+        <label htmlFor="per_page">Количество вакансий: </label>
         <input
           type="number"
-          id="perPage"
-          name="perPage"
+          id="per_page"
+          name="per_page"
           value={parseParams.per_page}
           onChange={handleInputChange}
           min="1"
@@ -93,7 +96,11 @@ const ParseVacanciesPage = () => {
               <div className='contact__details'>
                 <h4>{vacancy.name}</h4>
                 <p><i class="bi bi-geo-alt"></i> {vacancy.area}</p>
-                <p><i class="bi bi-cash"></i> {vacancy.salaryFrom} — {vacancy.salaryTo}</p>
+                <p><i class="bi bi-cash"></i> 
+                  {vacancy.salaryFrom === 0 
+                  ? (vacancy.salaryTo > 0 ? ` ${vacancy.salaryTo} ${vacancy.salaryCurrency}` : ` ??? ${vacancy.salaryCurrency}`) 
+                  : ` ${vacancy.salaryFrom} ${vacancy.salaryCurrency}${vacancy.salaryTo > 0 ? ` — ${vacancy.salaryTo} ${vacancy.salaryCurrency}` : ''}`}
+                </p>
                 <p><i class="bi bi-hourglass-split"></i> {vacancy.experience}</p>
               </div>
             </li>

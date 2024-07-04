@@ -30,7 +30,7 @@ public class GetVacancyQueryHandlerTest {
     @Test
     public void getVacancyQueryHandlerTest_validId_returnsVacancy(){
         // Arrange
-        Vacancy vacancy = new Vacancy(1, "Тестовая Вакансия", "Москва", "Нет опыта", 50000, 100000);
+        Vacancy vacancy = new Vacancy(1, "Тестовая Вакансия", "Москва", "Нет опыта", 50000, 100000, "RUR");
         when(vacancyRepository.findById(1L)).thenReturn(Optional.of(vacancy));
 
         // Act

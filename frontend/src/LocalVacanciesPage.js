@@ -51,6 +51,9 @@ const LocalVacanciesPage = () => {
         <h2>Локальные вакансии из базы данных</h2>
       </div>
       <div className='padding__height'>
+        <p style={{ fontStyle: 'italic' }}>(Заполнять все поля необязательно)</p>
+      </div>
+      <div className='padding__height'>
         <label htmlFor="name">Профессия: </label>
         <input
           type="text"
@@ -91,6 +94,16 @@ const LocalVacanciesPage = () => {
         />
       </div>
       <div className='padding__height'>
+        <label htmlFor="salaryCurrency">Валюта: </label>
+        <input
+          type="text"
+          id="currency"
+          name="currency"
+          value={searchParams.salaryCurrency}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className='padding__height'>
         <button onClick={handleSearch} className='btn'>Поиск</button>
       </div>
       <div className='padding__height'>
@@ -103,7 +116,11 @@ const LocalVacanciesPage = () => {
               <div className='contact__details'>
                 <h4>{vacancy.name}</h4>
                 <p><i class="bi bi-geo-alt"></i> {vacancy.area}</p>
-                <p><i class="bi bi-cash"></i> {vacancy.salaryFrom} — {vacancy.salaryTo}</p>
+                <p><i class="bi bi-cash"></i> 
+                  {vacancy.salaryFrom === 0 
+                  ? (vacancy.salaryTo > 0 ? ` ${vacancy.salaryTo} ${vacancy.salaryCurrency}` : ` ??? ${vacancy.salaryCurrency}`) 
+                  : ` ${vacancy.salaryFrom} ${vacancy.salaryCurrency}${vacancy.salaryTo > 0 ? ` — ${vacancy.salaryTo} ${vacancy.salaryCurrency}` : ''}`}
+                </p>
                 <p><i class="bi bi-hourglass-split"></i> {vacancy.experience}</p>
               </div>
             </li>
