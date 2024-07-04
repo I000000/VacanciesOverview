@@ -14,7 +14,7 @@ const LocalVacanciesPage = () => {
   useEffect(() => {
     const fetchVacancies = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/local/vacancies');
+        const response = await axios.get('http://localhost:8090/local/vacancies');
         setVacancies(response.data);
       } catch (error) {
         console.error('Error fetching vacancies:', error);
@@ -31,7 +31,7 @@ const LocalVacanciesPage = () => {
           return qs.stringify(params, { encode: false });
         },
       };
-      const response = await axios.get('http://localhost:8080/local/vacancies/search', config);
+      const response = await axios.get('http://localhost:8090/local/vacancies/search', config);
       setVacancies(response.data);
     } catch (error) {
       console.error('Error searching vacancies:', error);
@@ -47,9 +47,11 @@ const LocalVacanciesPage = () => {
 
   return (
     <div>
-      <h1>Local Vacancies</h1>
-      <div>
-        <label htmlFor="name">Name:</label>
+      <div className='padding__height'>
+        <h2>Локальные вакансии из базы данных</h2>
+      </div>
+      <div className='padding__height'>
+        <label htmlFor="name">Профессия: </label>
         <input
           type="text"
           id="name"
@@ -57,7 +59,9 @@ const LocalVacanciesPage = () => {
           value={searchParams.name}
           onChange={handleInputChange}
         />
-        <label htmlFor="area">Area:</label>
+      </div>
+      <div className='padding__height'>
+        <label htmlFor="area">Местоположение: </label>
         <input
           type="text"
           id="area"
@@ -65,7 +69,9 @@ const LocalVacanciesPage = () => {
           value={searchParams.area}
           onChange={handleInputChange}
         />
-        <label htmlFor="experience">Experience:</label>
+      </div>
+      <div className='padding__height'>
+        <label htmlFor="experience">Опыт работы: </label>
         <input
           type="text"
           id="experience"
@@ -73,7 +79,9 @@ const LocalVacanciesPage = () => {
           value={searchParams.experience}
           onChange={handleInputChange}
         />
-        <label htmlFor="salary">Salary:</label>
+      </div>
+      <div className='padding__height'>
+        <label htmlFor="salary">Минимальная зп: </label>
         <input
           type="number"
           id="salary"
@@ -81,17 +89,25 @@ const LocalVacanciesPage = () => {
           value={searchParams.salary}
           onChange={handleInputChange}
         />
-        <button onClick={handleSearch}>Search</button>
       </div>
-      <h2>Vacancies</h2>
+      <div className='padding__height'>
+        <button onClick={handleSearch} className='btn'>Поиск</button>
+      </div>
+      <div className='padding__height'>
+        <h2>Доступные вакансии:</h2>
+      </div>
       <ul>
         {vacancies.map((vacancy) => (
-          <li key={vacancy.id}>
-            <h3>{vacancy.name}</h3>
-            <p>Area: {vacancy.area}</p>
-            <p>Salary: {vacancy.salaryFrom} - {vacancy.salaryTo}</p>
-            <p>Experience: {vacancy.experience}</p>
-          </li>
+          <div className='contact__item'>
+            <li key={vacancy.id}>
+              <div className='contact__details'>
+                <h4>{vacancy.name}</h4>
+                <p><i class="bi bi-geo-alt"></i> {vacancy.area}</p>
+                <p><i class="bi bi-cash"></i> {vacancy.salaryFrom} — {vacancy.salaryTo}</p>
+                <p><i class="bi bi-hourglass-split"></i> {vacancy.experience}</p>
+              </div>
+            </li>
+          </div>
         ))}
       </ul>
     </div>

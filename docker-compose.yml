@@ -14,6 +14,7 @@ services:
       - SPRING_PROFILES_ACTIVE=NoSecurity
     networks:
       - springboot-mysql-network
+      - springboot-react-network
   mysqldb:
     image: mysql:latest
     ports:
@@ -30,8 +31,17 @@ services:
       retries: 10
       interval: 3s
       timeout: 30s
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000
+    networks:
+      - springboot-react-network
+
 volumes:
   mysql-data:
 networks:
   springboot-mysql-network:
     name: springboot-mysql-network
+  springboot-react-network:
+    name: springboot-react-network

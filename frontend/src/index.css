@@ -44,6 +44,8 @@
 
 	--ff-league_spartan: 'League Spartan', sans-serif;
 	--ff-poppins: 'Poppins', sans-serif;
+	--ff-arial: 'Arial', sans-serif;
+	--ff-intro: 'Intro', sans-serif;
 
 	--fs-1: 4.2rem;
 	--fs-2: 3.2rem;
@@ -125,7 +127,7 @@
 }
 
 body {
-	font-family: var(--ff-poppins);
+	font-family: var(--ff-arial);
 	background-color: var(--white);
 	line-height: var(--lh-1);
 	-webkit-font-smoothing: antialiased;
@@ -219,6 +221,17 @@ i {
 	transition: 0.2s ease-out;
 }
 
+.btn_big {
+	color: var(--white);
+	background-color: var(--selective-blue);
+	font-size: 1rem;
+	padding: 10px 30px;
+	white-space: normal;
+	border-radius: var(--radius-5);
+	box-shadow: 0 0 2px var(--black_80);
+	transition: 0.2s ease-out;
+}
+
 .btn-danger {
 	background-color: var(--radical-red);
 }
@@ -258,6 +271,30 @@ i {
 	padding: .88rem;
 	border-radius: var(--radius-5);
 	cursor: pointer;
+	min-height: max-content;
+	/* max-width: 280px; */
+}
+
+.background__item {
+	width: 100%;
+	background-color: #ecf1f1;
+	padding: .88rem;
+	border-radius: var(--radius-5);
+	cursor: pointer;
+	min-height: max-content;
+	/* max-width: 280px; */
+}
+
+.padding__item {
+	padding: 2rem;
+	border-radius: var(--radius-5);
+	min-height: max-content;
+	/* max-width: 280px; */
+}
+
+.padding__height {
+	padding: 10px 0px;
+	border-radius: var(--radius-5);
 	min-height: max-content;
 	/* max-width: 280px; */
 }

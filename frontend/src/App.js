@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ParseVacanciesPage from './ParseVacanciesPage';
 import LocalVacanciesPage from './LocalVacanciesPage';
 
-import axios from 'axios';
-
 const App = () => {
   return (
-    <Router>
-      <div>
+    <Router className>
+      <div className='contact__item'>
         <nav>
           <ul>
-            <li>
-              <Link to="/parse">Parse Vacancies</Link>
-            </li>
-            <li>
-              <Link to="/local">Local Vacancies</Link>
-            </li>
+            <div style={{display:'flex'}}>
+              <div className='padding__item'>
+                <li>
+                  <Link to="/parse" className='btn_big'>Парсинг вакансий</Link>
+                </li>
+              </div>
+              <div className='padding__item'>
+                <li>
+                  <Link to="/local" className='btn_big'>Локальные вакансии из базы данных</Link>
+                </li>
+              </div>
+            </div>
           </ul>
         </nav>
 
@@ -28,31 +32,5 @@ const App = () => {
     </Router>
 );
 };
-
-// const App = () => {
-//   const [backendResponse, setBackendResponse] = useState('');
-
-//   useEffect(() => {
-//     const checkBackendConnection = async () => {
-//       try {
-//         const response = await axios.get('http://localhost:8080/ping');
-//         setBackendResponse(response.data);
-//       } catch (error) {
-//         console.error('Error connecting to backend:', error);
-//         setBackendResponse('Error connecting to backend');
-//       }
-//     };
-
-//     checkBackendConnection();
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>Backend Connection Test</h1>
-//       <p>Backend response: {backendResponse}</p>
-//     </div>
-//   );
-// };
-
 
 export default App;

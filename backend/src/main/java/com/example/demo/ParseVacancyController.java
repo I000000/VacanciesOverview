@@ -5,12 +5,11 @@ import com.example.demo.Vacancy.Vacancy;
 import com.example.demo.Vacancy.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/parse")
@@ -21,8 +20,18 @@ public class ParseVacancyController {
     @Autowired
     private ParseVacanciesQueryHandler parseVacanciesQueryHandler;
 
-    @GetMapping("/vacancies/{num}")
-    public ResponseEntity<List<Vacancy>> getVacancies(@PathVariable Integer num) {
-        return parseVacanciesQueryHandler.execute(num);
+    @GetMapping("/vacancies")
+    public ResponseEntity<List<Vacancy>> getVacancies(@RequestParam(value="per_page") Integer perPage,
+                                                      @RequestParam(value="text", required=false) String text,
+                                                      @RequestParam(value="area", required=false) Integer area,
+                                                      @RequestParam(value="metro", required=false) Integer metro) {
+
+        Map<String, Object> input = new HashMap<>();
+        input.put("perPage", perPage);
+        input.put("text", text);
+        input.put("area", area);
+        input.put("metro", metro);
+
+        return parseVacanciesQueryHandler.execute(input);
     }
 }

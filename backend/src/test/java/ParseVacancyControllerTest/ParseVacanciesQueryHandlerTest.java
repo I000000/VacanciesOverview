@@ -16,11 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = VacanciesOverviewApplication.class)
 public class ParseVacanciesQueryHandlerTest {
@@ -35,9 +37,11 @@ public class ParseVacanciesQueryHandlerTest {
     private RestTemplate restTemplate;
 
     @Test
-    void parseVacanciesQueryHandler_validPerPage_returnsAndAddsVacancyToTheDatabaseAndOkStatus() {
+    void parseVacanciesQueryHandler_validParameters_returnsAndAddsVacancyToTheDatabaseAndOkStatus() {
         // Arrange
-        int perPage = 100;
+        Map<String, Object> input = new HashMap<>();
+        input.put("perPage", 100);
+
         VacancyResponse vacancyResponse = new VacancyResponse();
         List<VacancyItem> items = new ArrayList<>();
         VacancyItem item = new VacancyItem(1, "Тестовая Вакансия", "Москва", 50000, 100000, "Нет опыта");
@@ -48,7 +52,7 @@ public class ParseVacanciesQueryHandlerTest {
                 .thenReturn(vacancyResponse);
 
         // Act
-        ResponseEntity<List<Vacancy>> response = parseVacanciesQueryHandler.execute(perPage);
+        ResponseEntity<List<Vacancy>> response = parseVacanciesQueryHandler.execute(input);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -59,14 +63,17 @@ public class ParseVacanciesQueryHandlerTest {
         assertEquals(50000, response.getBody().get(0).getSalaryFrom());
         assertEquals(100000, response.getBody().get(0).getSalaryTo());
         assertEquals("Нет опыта", response.getBody().get(0).getExperience());
+
+        verify(vacancyRepository, times(1)).save(any(Vacancy.class));
     }
 
     @Test
     void parseVacanciesQueryHandler_invalidPerPage_throwsIncorrectPerPageException() {
         // Arrange
-        int perPage = 1000;
+        Map<String, Object> input = new HashMap<>();
+        input.put("perPage", 1000);
 
         // Act and Assert
-        assertThrows(IncorrectParameter.class, () -> parseVacanciesQueryHandler.execute(perPage));
+        assertThrows(IncorrectParameter.class, () -> parseVacanciesQueryHandler.execute(input));
     }
 }

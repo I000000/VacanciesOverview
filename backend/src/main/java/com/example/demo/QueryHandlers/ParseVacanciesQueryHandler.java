@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
-public class ParseVacanciesQueryHandler implements Query<Integer, List<Vacancy>> {
+public class ParseVacanciesQueryHandler implements Query<Map<String, Object>, List<Vacancy>> {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -24,16 +26,30 @@ public class ParseVacanciesQueryHandler implements Query<Integer, List<Vacancy>>
     private VacancyRepository vacancyRepository;
 
     @Override
-    public ResponseEntity<List<Vacancy>> execute(Integer perPage) {
+    public ResponseEntity<List<Vacancy>> execute(Map<String, Object> input) {
+
+        Integer perPage = (Integer) input.get("perPage");
+        String text = (String) input.get("text");
+        Integer area = (Integer) input.get("area");
+        Integer metro = (Integer) input.get("metro");
 
         if((perPage < 1) || (perPage > 100)){
             throw new IncorrectParameter("Choose the number between 1 and 100");
         }
         else {
+            StringBuilder url = new StringBuilder("https://api.hh.ru/vacancies?per_page=" + perPage);
 
-            String url = "https://api.hh.ru/vacancies?per_page=" + perPage;
+            if(text != null){
+                url.append("&text=").append(text);
+            }
+            if(area != null){
+                url.append("&area=").append(area);
+            }
+            if(metro != null){
+                url.append("&metro=").append(metro);
+            }
 
-            VacancyResponse response = restTemplate.getForObject(url, VacancyResponse.class);
+            VacancyResponse response = restTemplate.getForObject(url.toString(), VacancyResponse.class);
 
             List<Vacancy> vacancies = new ArrayList<>();
             assert response != null;
