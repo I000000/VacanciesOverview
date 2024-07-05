@@ -2,7 +2,6 @@ package com.example.demo.QueryHandlers;
 
 import com.example.demo.Vacancy.Vacancy;
 import com.example.demo.Vacancy.VacancyRepository;
-import com.example.demo.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

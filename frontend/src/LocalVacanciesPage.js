@@ -119,7 +119,7 @@ const LocalVacanciesPage = () => {
                 <p><i class="bi bi-cash"></i> 
                   {vacancy.salaryFrom === 0 
                   ? (vacancy.salaryTo > 0 ? ` ${vacancy.salaryTo} ${vacancy.salaryCurrency}` : ` ??? ${vacancy.salaryCurrency}`) 
-                  : ` ${vacancy.salaryFrom} ${vacancy.salaryCurrency}${vacancy.salaryTo > 0 ? ` — ${vacancy.salaryTo} ${vacancy.salaryCurrency}` : ''}`}
+                  : ` ${vacancy.salaryFrom} ${vacancy.salaryTo > 0 ? ` — ${vacancy.salaryTo} ${vacancy.salaryCurrency}` : `${vacancy.salaryCurrency}` }`}
                 </p>
                 <p><i class="bi bi-hourglass-split"></i> {vacancy.experience}</p>
               </div>

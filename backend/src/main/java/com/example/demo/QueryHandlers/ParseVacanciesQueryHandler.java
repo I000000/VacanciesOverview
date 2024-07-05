@@ -3,7 +3,6 @@ package com.example.demo.QueryHandlers;
 import com.example.demo.Exceptions.IncorrectParameter;
 import com.example.demo.JSONParsingAdd.VacancyItem;
 import com.example.demo.JSONParsingAdd.VacancyResponse;
-import com.example.demo.Query;
 import com.example.demo.Vacancy.Vacancy;
 import com.example.demo.Vacancy.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;

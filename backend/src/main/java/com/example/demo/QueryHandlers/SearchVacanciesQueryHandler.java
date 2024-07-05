@@ -1,7 +1,6 @@
 package com.example.demo.QueryHandlers;
 
 import com.example.demo.Exceptions.IncorrectParameter;
-import com.example.demo.Query;
 import com.example.demo.Vacancy.Vacancy;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -31,7 +30,6 @@ public class SearchVacanciesQueryHandler implements Query<Map<String, Object>, L
         CriteriaQuery<Vacancy> query = criteriaBuilder.createQuery(Vacancy.class);
         Root<Vacancy> root = query.from(Vacancy.class);
         List<Predicate> predicates = new ArrayList<>();
-
         String name = (String) input.get("name");
         String area = (String) input.get("area");
         String experience = (String) input.get("experience");
@@ -57,7 +55,7 @@ public class SearchVacanciesQueryHandler implements Query<Map<String, Object>, L
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("salaryFrom"), salary));
             }
             else{
-                throw new IncorrectParameter("You should make more then nothing.");
+                throw new IncorrectParameter("You should make more than nothing.");
             }
         }
         if(currency != null) {
@@ -65,9 +63,7 @@ public class SearchVacanciesQueryHandler implements Query<Map<String, Object>, L
         }
 
         query.where(predicates.toArray(new Predicate[0]));
-
         List<Vacancy> vacancies = entityManager.createQuery(query).getResultList();
-
         return ResponseEntity.ok(vacancies);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.QueryHandlers;
 
 import org.springframework.http.ResponseEntity;
 
